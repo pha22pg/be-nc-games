@@ -14,4 +14,7 @@ app.get('*', (req,res)=>{
     res.status(404).send({msg: "Invalid endpoint"})
 })
 
+app.get('*', (req,res)=>{
+    res.status(404).send({msg: "Invalid endpoint"})
+})
 module.exports = app;

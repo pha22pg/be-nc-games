@@ -23,7 +23,6 @@ describe("GET /api/categories", ()=>{
                 expect(category).toEqual(expect.objectContaining(
                     {slug:expect.any(String),
                     description: expect.any(String)}
-                    
                 ))
             }))
         })
@@ -48,7 +47,19 @@ describe("GET /api/reviews/:review_id", ()=>{
         .get('/api/reviews/1')
         .expect(200)
         .then((res)=>{
-            console.log(res);
+            console.log(res.body[1]);
+            //expect the review object to have keys:
+            expect(res.body[1]).toEqual(expect.objectContaining({
+                review_id:expect.any(Number),
+                title:expect.any(String),
+                review_body:expect.any(String),
+                designer:expect.any(String),
+                review_img_url:expect.any(String),
+                votes:expect.any(Number),
+                category:expect.any(String),
+                owner:expect.any(String),
+                created_at:expect.any(String),
+            }))
         })
     })
 })

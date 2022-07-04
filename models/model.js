@@ -6,3 +6,8 @@ exports.fetchCategories = () =>{
         return rows;
       });
 }
+exports.fetchReview = () =>{
+    return db.query("SELECT * FROM reviews;").then(({ rows }) => {
+        return rows;
+      });
+}

@@ -29,3 +29,11 @@ describe("GET /api/categories", ()=>{
         })
     })
 })
+
+describe("GET /api/:invalid endpoint", ()=>{
+    test("Returns 404 error", ()=>{
+        return request(app)
+        .get('/api/invalid')
+        .expect(404);
+    })
+})

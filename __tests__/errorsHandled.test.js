@@ -30,14 +30,68 @@ describe("GET /api/categories", ()=>{
     })
 })
 
+
 describe("GET /api/:invalid endpoint", ()=>{
     test("Returns 404 error", ()=>{
         return request(app)
         .get('/api/invalid')
         .expect(404) 
         .then((res)=>{
-            //console.log(Object.keys(res));
             expect(res.body.msg).toBe("Invalid endpoint");
+        })
+    })
+
+})
+
+describe("GET /api/reviews/:review_id", ()=>{
+    test("GET /api/reviews responds with a review object, which has the following keys: review_id, title, review_body, designer, review_img_url, votes, category, owner, create_at", ()=>{
+        return request(app)
+        .get('/api/reviews/1')
+        .expect(200)
+        .then((res)=>{
+            expect(res.body[0]).toEqual(expect.objectContaining({
+                review_id:1,
+                title:'Agricola',
+                review_body:'Farmyard fun!',
+                designer: 'Uwe Rosenberg',
+                review_img_url:'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                votes: 1,
+                category:'euro game',
+                owner:'mallionaire',
+                created_at: '2021-01-18T10:00:20.514Z',
+            }))
+        })
+    })
+})
+
+describe("GET /api/reviews/:invalid_endpoint", ()=>{
+    test("GET /api/reviews/666", ()=>{
+        return request(app)
+        .get(`/api/reviews/666`)
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("review_id not found")
+        })
+    })
+    test("STATUS 400: BAD REQUEST, GET /api/reviews/bananas", ()=>{
+        return request(app)
+        .get(`/api/reviews/bananas`)
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.msg).toBe("Bad request")
+        })
+
+    })
+})
+
+describe.only("PATCH /api/reviews/:review_id, Request body accepts an object in the form { inc_votes: newVote } indicating how much the 'votes' property of the review is changed by", ()=>{
+    test("PATCH /api/reviews/{review_id", ()=>{
+        return request(app)
+        .patch(`/api/reviews/1`)
+        .send({ inc_votes : 666 })
+        .expect(200)
+        .then((res)=>{
+            console.log(res.body)
         })
     })
 })

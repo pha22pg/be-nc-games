@@ -23,11 +23,13 @@ describe("GET /api/categories", ()=>{
                 expect(category).toEqual(expect.objectContaining(
                     {slug:expect.any(String),
                     description: expect.any(String)}
+                    
                 ))
             }))
         })
     })
 })
+
 
 describe("GET /api/:invalid endpoint", ()=>{
     test("Returns 404 error", ()=>{

@@ -23,7 +23,6 @@ describe("GET /api/categories", ()=>{
                 expect(category).toEqual(expect.objectContaining(
                     {slug:expect.any(String),
                     description: expect.any(String)}
-                    
                 ))
             }))
         })

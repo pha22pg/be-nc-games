@@ -12,6 +12,7 @@ exports.getCategories = (req,res,next) =>{
 
         next(err)
     })
+
 }
 
 exports.getReviewsByID = (req,res, next) =>{
@@ -26,4 +27,5 @@ exports.getReviewsByID = (req,res, next) =>{
         //res.status(400).send({ err });
         next(err)
     })
+
 }

@@ -23,11 +23,13 @@ describe("GET /api/categories", ()=>{
                 expect(category).toEqual(expect.objectContaining(
                     {slug:expect.any(String),
                     description: expect.any(String)}
+                    
                 ))
             }))
         })
     })
 })
+
 
 describe("GET /api/:invalid endpoint", ()=>{
     test("Returns 404 error", ()=>{
@@ -38,6 +40,7 @@ describe("GET /api/:invalid endpoint", ()=>{
             expect(res.body.msg).toBe("Invalid endpoint");
         })
     })
+
 })
 
 describe("GET /api/reviews/:review_id", ()=>{
@@ -72,4 +75,5 @@ describe.only("GET /api/reviews/:invalid_endpoint", ()=>{
         .get(`/api/reviews/bananas`)
         .expect(400)
     })
+
 })

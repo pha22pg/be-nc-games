@@ -1,5 +1,5 @@
 
-const { fetchCategories, fetchReviews } = require('../models/model')
+const { fetchCategories } = require('../models/model')
 
 exports.getCategories = (req,res,next) =>{
     fetchCategories()
@@ -12,6 +12,7 @@ exports.getCategories = (req,res,next) =>{
 
         next(err)
     })
+
 }
 
 exports.getReviews = (req,res, next) =>{
@@ -39,4 +40,5 @@ exports.getReviews = (req,res, next) =>{
         //res.status(400).send({ err });
         next(err)
     })
+
 }

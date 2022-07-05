@@ -30,10 +30,15 @@ describe("GET /api/categories", ()=>{
     })
 })
 
+
 describe("GET /api/:invalid endpoint", ()=>{
     test("Returns 404 error", ()=>{
         return request(app)
         .get('/api/invalid')
-        .expect(404);
+        .expect(404) 
+        .then((res)=>{
+            //console.log(Object.keys(res));
+            expect(res.body.msg).toBe("Invalid endpoint");
+        })
     })
 })

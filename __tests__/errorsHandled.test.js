@@ -61,15 +61,22 @@ describe("GET /api/reviews/:review_id", ()=>{
     })
 })
 
-describe.only("GET /api/reviews/:invalid_endpoint", ()=>{
+describe("GET /api/reviews/:invalid_endpoint", ()=>{
     test("GET /api/reviews/666", ()=>{
         return request(app)
         .get(`/api/reviews/666`)
         .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("review_id not found")
+        })
     })
     test("STATUS 400: BAD REQUEST, GET /api/reviews/bananas", ()=>{
         return request(app)
         .get(`/api/reviews/bananas`)
         .expect(400)
+        .then((res)=>{
+            expect(res.body.msg).toBe("Bad request")
+        })
+
     })
 })

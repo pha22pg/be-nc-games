@@ -13,3 +13,8 @@ exports.fetchReviewsByID = (review_id) =>{
         return Promise.reject({status:404, msg: "review_id not found"})
       });
 }
+exports.fetchUsers = () =>{
+    return db.query("SELECT * FROM users;").then(({ rows }) => {
+        return rows;
+      });
+}

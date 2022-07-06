@@ -84,3 +84,21 @@ describe("GET /api/reviews/:invalid_endpoint", ()=>{
     })
 
 })
+
+describe.only("GET /api/users", ()=>{
+    test("GET request returns an array of objects each with a properties of username, name and avatar_url", ()=>{
+        return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then((res)=>{
+            const users = res.body.users;
+            console.log(users);
+            expect(users).toHaveLength(4);
+            users.forEach((user)=>{
+                expect(user).toHaveProperty('username');
+                expect(user).toHaveProperty('name');
+                expect(user).toHaveProperty('avatar_url');
+            });
+        })
+    })
+})

@@ -43,13 +43,16 @@ describe("GET /api/:invalid endpoint", ()=>{
 
 })
 
-describe("GET /api/reviews/:review_id", ()=>{
+describe.only("GET /api/reviews/:review_id", ()=>{
     test("GET /api/reviews responds with a review object, which has the following keys: review_id, title, review_body, designer, review_img_url, votes, category, owner, create_at", ()=>{
         return request(app)
         .get('/api/reviews/1')
         .expect(200)
         .then((res)=>{
-            expect(res.body[0]).toEqual(expect.objectContaining({
+            //console.log(res.body);
+            const reviewObject = { review : res.body[0]};
+            console.log(reviewObject)
+            expect(reviewObject.review).toEqual(expect.objectContaining({
                 review_id:1,
                 title:'Agricola',
                 review_body:'Farmyard fun!',

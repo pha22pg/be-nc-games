@@ -43,13 +43,12 @@ describe("GET /api/:invalid endpoint", ()=>{
 
 })
 
-describe.only("GET /api/reviews/:review_id", ()=>{
+describe("GET /api/reviews/:review_id", ()=>{
     test("GET /api/reviews responds with a review object, which has the following keys: review_id, title, review_body, designer, review_img_url, votes, category, owner, create_at", ()=>{
         return request(app)
         .get('/api/reviews/1')
         .expect(200)
         .then((res)=>{
-            //console.log(res.body);
             const reviewObject = { review : res.body[0]};
             console.log(reviewObject)
             expect(reviewObject.review).toEqual(expect.objectContaining({
@@ -88,7 +87,7 @@ describe("GET /api/reviews/:invalid_endpoint", ()=>{
 
 })
 
-describe.only("GET /api/users", ()=>{
+describe("GET /api/users", ()=>{
     test("GET request returns an array of objects each with a properties of username, name and avatar_url", ()=>{
         return request(app)
         .get('/api/users')

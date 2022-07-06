@@ -122,5 +122,15 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
             
         })
     })
+    test("PATCH /api/reviews/valid_id with an invalid object i.e. an object with a non-integer inc_votes value gives STATUS 400", ()=>{
+        return request(app)
+        .patch(`/api/reviews/1`)
+        .send({inc_votes : 'melon'})
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.msg).toBe("Bad request")
+            
+        })
+    })
   
 })

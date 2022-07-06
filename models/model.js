@@ -17,10 +17,8 @@ exports.alterReviewVotes = (review_id, votes_change) =>{
    return db.query("UPDATE reviews SET votes = votes + $2 WHERE review_id = $1 RETURNING *;", [review_id,votes_change])
     .then(({ rows }) => {
         if(rows.length) return rows;
-        
         if(votes_change === undefined){ 
-            return Promise.reject({status:404, msg: "request object incorrectly formatted"})
-            
+            return Promise.reject({status:404, msg: "request object incorrectly formatted"}) 
         }
         return Promise.reject({status:404, msg: "review_id not found"})
       });

@@ -29,14 +29,12 @@ exports.getReviewsByID = (req,res, next) =>{
 exports.updateReviewVotes = (req,res,next) => {
     const { review_id } = req.params;
     const { inc_votes } = req.body;
-    console.log(inc_votes);
 
     alterReviewVotes(review_id, inc_votes)
     .then((reviews)=>{
         res.status(200).send(reviews[0]);
     })
     .catch((err)=>{
-        console.log(err)
         next(err);
     })
 }

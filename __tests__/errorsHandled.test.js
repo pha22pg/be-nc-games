@@ -94,4 +94,33 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
             expect(res.body.votes === 667);
         })
     })
+    test("PATCH /api/reviews/:invalid_review_id returns STATUS 400", ()=>{
+        return request(app)
+        .patch(`/api/reviews/bananas`)
+        .send({ inc_votes : 666 })
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.msg).toEqual("Bad request")
+        })
+    })
+    test("PATCH /api/reviews/:unfound_review_id returns STATUS 404", ()=>{
+        return request(app)
+        .patch(`/api/reviews/100000000`)
+        .send({ inc_votes : 666 })
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("review_id not found")
+        })
+    })
+    test("PATCH /api/reviews/valid_id with an invalid object i.e. an empty object gives STATUS 400", ()=>{
+        return request(app)
+        .patch(`/api/reviews/100`)
+        .send({ })
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("request object incorrectly formatted")
+            
+        })
+    })
+  
 })

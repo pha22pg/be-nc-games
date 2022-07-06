@@ -1,5 +1,5 @@
 
-const { fetchCategories, fetchReviewsByID } = require('../models/model')
+const { fetchCategories, fetchReviewsByID, alterReviewVotes } = require('../models/model')
 
 exports.getCategories = (req,res,next) =>{
     fetchCategories()
@@ -8,8 +8,6 @@ exports.getCategories = (req,res,next) =>{
         }
     )
     .catch((err)=>{
-        console.log(err)
-
         next(err)
     })
 
@@ -23,9 +21,19 @@ exports.getReviewsByID = (req,res, next) =>{
         res.status(200).send(reviews);
     })
     .catch((err)=>{
-        
-        //res.status(400).send({ err });
         next(err)
     })
 
+}
+
+exports.updateReviewVotes = (req,res,next) => {
+    const { review_id } = req.params;
+    const { inc_votes } = req.body;
+    alterReviewVotes(review_id, inc_votes)
+    .then((reviews)=>{
+        res.status(200).send(reviews[0]);
+    })
+    .catch((err)=>{
+        next(err);
+    })
 }

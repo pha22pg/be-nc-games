@@ -134,3 +134,28 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
     })
   
 })
+
+
+
+
+describe.only("GET /api/reviews/:review_id/", ()=>{
+    test("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
+        return request(app)
+        .get('/api/reviews/2/comment_count')
+        .expect(200)
+        .then((res)=>{
+            expect(res.body).toEqual(expect.objectContaining({
+                comment_count: 3,
+                title: 'Jenga',
+                designer: 'Leslie Scott',
+                owner: 'philippaclaire9',
+                review_img_url:
+                'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                review_body: 'Fiddly fun for all the family',
+                category: 'dexterity',
+                created_at: "2021-01-18T10:01:41.251Z",
+                votes: 5
+            }))
+        })
+    })
+})

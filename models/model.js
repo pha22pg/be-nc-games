@@ -24,3 +24,27 @@ exports.alterReviewVotes = (review_id, votes_change) =>{
         return Promise.reject({status:404, msg: "review_id not found"})
       });
 }
+
+exports.fetchReviewCommentCount = (review_id) =>{
+    const fetchCommentCount = db.query("SELECT * FROM comments WHERE review_id = $1;", [review_id]).then(({ rows }) => {
+            const commentCount = rows.length;
+            return commentCount;
+    });
+    const fetUserByID = db.query("SELECT * FROM reviews WHERE review_id = $1;", [review_id]).then(({ rows }) => {
+        if(rows.length){
+            return rows;
+        } 
+        return Promise.reject({status:404, msg: "review_id not found"})
+    }); 
+    return Promise.all([fetchCommentCount, fetUserByID])
+    .then((values)=>{
+        // console.log("result of fetchCommentCount: ", values[0])
+        // console.log("result of fetchUserByID:     ", values[1]);
+        const returnObject = { commentCount : values[0], user : values[1][0]}
+        return returnObject;
+    })
+    // .catch((err)=>{
+    //     console.log(err);
+    // })
+
+}

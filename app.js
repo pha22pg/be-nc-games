@@ -1,7 +1,7 @@
 const express = require('express');
 
 const app = express();
-const { getCategories, getReviewsByID, updateReviewVotes} = require('./controllers/controller')
+const { getCategories, getReviewsByID, updateReviewVotes, getReviewCommentCount} = require('./controllers/controller')
 
 
 
@@ -10,6 +10,7 @@ app.use(express.json());
 app.get('/api/categories', getCategories);
 app.get('/api/reviews/:review_id', getReviewsByID);
 app.patch('/api/reviews/:review_id', updateReviewVotes);
+app.get('/api/reviews/:review_id/:comment_count', getReviewCommentCount);
 
 app.all('*', (req,res)=>{
     res.status(404).send({msg: "Invalid endpoint"})

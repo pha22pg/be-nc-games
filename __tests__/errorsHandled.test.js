@@ -78,20 +78,20 @@ describe("GET /api/reviews/:invalid_endpoint", ()=>{
         .get(`/api/reviews/bananas`)
         .expect(400)
         .then((res)=>{
-            expect(res.body.msg).toBe("Bad request")
+            expect(res.body.msg).toEqual("Bad request")
         })
 
     })
 })
 
-describe.only("PATCH /api/reviews/:review_id, Request body accepts an object in the form { inc_votes: newVote } indicating how much the 'votes' property of the review is changed by", ()=>{
-    test("PATCH /api/reviews/{review_id", ()=>{
+describe("PATCH /api/reviews/:review_id, Request body accepts an object in the form { inc_votes: newVote } indicating how much the 'votes' property of the review is to be changed by", ()=>{
+    test("PATCH /api/reviews/{review_id} changes the votes from 1 to 667 by adding inc_votes of 666", ()=>{
         return request(app)
         .patch(`/api/reviews/1`)
         .send({ inc_votes : 666 })
         .expect(200)
         .then((res)=>{
-            console.log(res.body)
+            expect(res.body.votes === 667);
         })
     })
 })

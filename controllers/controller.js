@@ -32,10 +32,11 @@ exports.updateReviewVotes = (req,res,next) => {
     console.log(inc_votes);
 
     alterReviewVotes(review_id, inc_votes)
-    .then(()=>{
-
+    .then((reviews)=>{
+        res.status(200).send(reviews[0]);
     })
     .catch((err)=>{
         console.log(err)
+        next(err);
     })
 }

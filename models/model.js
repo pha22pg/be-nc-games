@@ -40,7 +40,7 @@ exports.fetchReviewCommentCount = (review_id) =>{
     .then((values)=>{
         // console.log("result of fetchCommentCount: ", values[0])
         // console.log("result of fetchUserByID:     ", values[1]);
-        const returnObject = { commentCount : values[0], user : values[1][0]}
+        const returnObject = { commentCount : values[0], review : values[1][0]}
         return returnObject;
     })
     // .catch((err)=>{

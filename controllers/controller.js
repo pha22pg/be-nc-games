@@ -56,13 +56,13 @@ exports.getReviewCommentCount = (req,res, next) =>{
     const { review_id } = req.params;
    // console.log("req.params", req.params);
     fetchReviewCommentCount(review_id)
-    .then((reviews)=>{
+    .then((reviewObject)=>{
         //reviews[0].commentCount = 3;
-        const {user} = reviews;
-        const {commentCount} = reviews;
-        user.comment_count = commentCount;
-        console.log(user);
-        res.status(200).send(user);
+        const {review} = reviewObject;
+        const {commentCount} = reviewObject;
+        review.comment_count = commentCount;
+        console.log(review);
+        res.status(200).send(review);
     })
     .catch((err)=>{
         next(err)

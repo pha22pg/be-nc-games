@@ -158,4 +158,28 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
             }))
         })
     })
+    test.only("GET /api/reviews/:invalid_review_ID/comment_count", ()=>{
+        return request(app)
+        .get('/api/reviews/bananas/comment_count')
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toEqual("Bad request")
+        })
+    })
+    test("GET /api/reviews/:non_existant_review_ID/comment_count", ()=>{
+        return request(app)
+        .get('/api/reviews/10000/comment_count')
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.msg).toBe("review_id not found")
+        })
+    })
+    test("GET /api/reviews/review_ID/:invalid_path_end_point", ()=>{
+        return request(app)
+        .get('/api/reviews/2/banana_count')
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("Bad request")
+        })
+    })
 })

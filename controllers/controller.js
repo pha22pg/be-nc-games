@@ -1,6 +1,6 @@
 
 
-const { fetchCategories, fetchReviewsByID, fetchUsers, alterReviewVotes, fetchReviewCommentCount, } = require('../models/model')
+const { fetchCategories, fetchReviewsByID, fetchUsers, alterReviewVotes, fetchReviewCommentCount, fetchReviews} = require('../models/model')
 
 
 exports.getCategories = (req,res,next) =>{
@@ -50,6 +50,18 @@ exports.updateReviewVotes = (req,res,next) => {
     alterReviewVotes(review_id, inc_votes)
     .then((reviews)=>{
         res.status(200).send(reviews[0]);
+    })
+    .catch((err)=>{
+        next(err);
+    })
+}
+
+exports.getReviews = (req,res,next) => {
+    console.log("in controller")
+    fetchReviews().
+    then((reviews)=>{
+        //console.log(reviews)
+        res.status(200).send({reviews});
     })
     .catch((err)=>{
         next(err);

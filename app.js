@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const { getCategories, getReviewsByID, updateReviewVotes, getReviewCommentCount, getUsers} = require('./controllers/controller')
+const { getCategories, getReviewsByID, updateReviewVotes, getUsers, getReviews} = require('./controllers/controller')
 
 
 console.log("in app")
@@ -12,11 +12,9 @@ app.use(express.json());
 
 app.get('/api/categories', getCategories);
 app.get('/api/reviews/:review_id', getReviewsByID);
-
 app.get('/api/users/', getUsers);
-
 app.patch('/api/reviews/:review_id', updateReviewVotes);
-
+app.get('/api/reviews', getReviews);
 
 
 app.all('*', (req,res)=>{

@@ -55,20 +55,3 @@ exports.updateReviewVotes = (req,res,next) => {
         next(err);
     })
 }
-// exports.getReviewCommentCount = (req,res, next) =>{
-//     const { review_id } = req.params;
-   
-//     console.log("hello????")
-//     fetchReviewCommentCount(review_id)
-//     .then((reviewObject)=>{
-//         //reviews[0].commentCount = 3;
-//         const {review} = reviewObject;
-//         const {commentCount} = reviewObject;
-//         review.comment_count = commentCount;
-//         console.log(review);
-//         res.status(200).send(review);
-//     })
-//     .catch((err)=>{
-//         next(err);
-//     })
-// }

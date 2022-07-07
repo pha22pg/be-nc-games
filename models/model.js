@@ -25,7 +25,15 @@ exports.alterReviewVotes = (review_id, votes_change) =>{
       });
 }
 
-exports.fetchReviewCommentCount = (review_id) =>{
+exports.fetchReviewCommentCount = (review_id, comment_count) =>{
+    if(comment_count !== "comment_count") {
+        return Promise.reject({status:404, msg: "Bad request"});
+        
+    }
+    if(isNaN(review_id)) {
+        return Promise.reject({status:404, msg: "Invalid endpoint, review_id needs to be an integer"});
+    }
+
     const fetchCommentCount = db.query("SELECT * FROM comments WHERE review_id = $1;", [review_id]).then(({ rows }) => {
             const commentCount = rows.length;
             return commentCount;

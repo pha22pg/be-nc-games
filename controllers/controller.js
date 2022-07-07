@@ -55,17 +55,9 @@ exports.updateReviewVotes = (req,res,next) => {
 exports.getReviewCommentCount = (req,res, next) =>{
     const { review_id } = req.params;
     const { comment_count } = req.params;
-
-    if(comment_count !== "comment_count") {
-        return Promise.reject({status:404, msg: "invalid endpoint"});
-        
-    }
-    if(isNaN(review_id)) {
-        return Promise.reject({status:404, msg: "invalid endpoint"});
-    }
     
    console.log("req.params", req.params);
-    fetchReviewCommentCount(review_id)
+    fetchReviewCommentCount(review_id, comment_count)
     .then((reviewObject)=>{
         //reviews[0].commentCount = 3;
         const {review} = reviewObject;

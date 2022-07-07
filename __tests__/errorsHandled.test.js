@@ -158,18 +158,18 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
             }))
         })
     })
-    test.only("GET /api/reviews/:invalid_review_ID/comment_count", ()=>{
+    test("GET /api/reviews/:invalid_review_ID/comment_count", ()=>{
         return request(app)
         .get('/api/reviews/bananas/comment_count')
         .expect(404)
         .then((res)=>{
-            expect(res.body.msg).toEqual("Bad request")
+            expect(res.body.msg).toEqual("Invalid endpoint, review_id needs to be an integer")
         })
     })
     test("GET /api/reviews/:non_existant_review_ID/comment_count", ()=>{
         return request(app)
         .get('/api/reviews/10000/comment_count')
-        .expect(400)
+        .expect(404)
         .then((res)=>{
             expect(res.body.msg).toBe("review_id not found")
         })

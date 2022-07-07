@@ -80,12 +80,13 @@ describe("GET /api/reviews/:invalid_endpoint", ()=>{
         .get(`/api/reviews/bananas`)
         .expect(400)
         .then((res)=>{
-            expect(res.body.msg).toBe("Bad request")
+            expect(res.body.msg).toEqual("Bad request")
         })
 
     })
-
 })
+
+
 
 describe("GET /api/users", ()=>{
     test("GET request returns an array of objects each with a properties of username, name and avatar_url", ()=>{
@@ -103,4 +104,55 @@ describe("GET /api/users", ()=>{
             });
         })
     })
+=======
+describe("PATCH /api/reviews/:review_id, Request body accepts an object in the form { inc_votes: newVote } indicating how much the 'votes' property of the review is to be changed by", ()=>{
+    test("PATCH /api/reviews/{review_id} changes the votes from 1 to 667 by adding inc_votes of 666", ()=>{
+        return request(app)
+        .patch(`/api/reviews/1`)
+        .send({ inc_votes : 666 })
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.votes === 667);
+        })
+    })
+    test("PATCH /api/reviews/:invalid_review_id returns STATUS 400", ()=>{
+        return request(app)
+        .patch(`/api/reviews/bananas`)
+        .send({ inc_votes : 666 })
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.msg).toEqual("Bad request")
+        })
+    })
+    test("PATCH /api/reviews/:unfound_review_id returns STATUS 404", ()=>{
+        return request(app)
+        .patch(`/api/reviews/100000000`)
+        .send({ inc_votes : 666 })
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("review_id not found")
+        })
+    })
+    test("PATCH /api/reviews/valid_id with an invalid object i.e. an empty object gives STATUS 400", ()=>{
+        return request(app)
+        .patch(`/api/reviews/100`)
+        .send({ })
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("request object incorrectly formatted")
+            
+        })
+    })
+    test("PATCH /api/reviews/valid_id with an invalid object i.e. an object with a non-integer inc_votes value gives STATUS 400", ()=>{
+        return request(app)
+        .patch(`/api/reviews/1`)
+        .send({inc_votes : 'melon'})
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.msg).toBe("Bad request")
+            
+        })
+    })
+  
+
 })

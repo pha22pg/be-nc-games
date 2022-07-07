@@ -104,7 +104,7 @@ describe("GET /api/users", ()=>{
             });
         })
     })
-=======
+
 describe("PATCH /api/reviews/:review_id, Request body accepts an object in the form { inc_votes: newVote } indicating how much the 'votes' property of the review is to be changed by", ()=>{
     test("PATCH /api/reviews/{review_id} changes the votes from 1 to 667 by adding inc_votes of 666", ()=>{
         return request(app)
@@ -161,12 +161,13 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
 
 
 describe.only("GET /api/reviews/:review_id/", ()=>{
-    test("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
+    test.only("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
         return request(app)
-        .get('/api/reviews/2/comment_count')
+        .get('/api/reviews/2')
         .expect(200)
         .then((res)=>{
-            expect(res.body).toEqual(expect.objectContaining({
+
+            expect(res.body.review).toEqual(expect.objectContaining({
                 comment_count: 3,
                 title: 'Jenga',
                 designer: 'Leslie Scott',
@@ -180,17 +181,17 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
             }))
         })
     })
-    test("GET /api/reviews/:invalid_review_ID/comment_count", ()=>{
+    test("GET /api/reviews/:invalid_review_ID/", ()=>{
         return request(app)
-        .get('/api/reviews/bananas/comment_count')
+        .get('/api/reviews/bananas')
         .expect(404)
         .then((res)=>{
-            expect(res.body.msg).toEqual("Invalid endpoint, review_id needs to be an integer")
+            expect(res.body.msg).toEqual("Bad request")
         })
     })
-    test("GET /api/reviews/:non_existant_review_ID/comment_count", ()=>{
+    test("GET /api/reviews/:non_existant_review_ID/", ()=>{
         return request(app)
-        .get('/api/reviews/10000/comment_count')
+        .get('/api/reviews/10000')
         .expect(404)
         .then((res)=>{
             expect(res.body.msg).toBe("review_id not found")
@@ -198,11 +199,12 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
     })
     test("GET /api/reviews/review_ID/:invalid_path_end_point", ()=>{
         return request(app)
-        .get('/api/reviews/2/banana_count')
+        .get('/api/reviewsc/2')
         .expect(404)
         .then((res)=>{
-            expect(res.body.msg).toBe("Bad request")
+            expect(res.body.msg).toBe("Invalid endpoint")
         })
     })
 
+})
 })

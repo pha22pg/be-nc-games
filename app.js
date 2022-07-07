@@ -5,7 +5,7 @@ const app = express();
 const { getCategories, getReviewsByID, updateReviewVotes, getReviewCommentCount, getUsers} = require('./controllers/controller')
 
 
-
+console.log("in app")
 
 
 app.use(express.json());
@@ -16,7 +16,7 @@ app.get('/api/reviews/:review_id', getReviewsByID);
 app.get('/api/users/', getUsers);
 
 app.patch('/api/reviews/:review_id', updateReviewVotes);
-app.get('/api/reviews/:review_id/:comment_count', getReviewCommentCount);
+
 
 
 app.all('*', (req,res)=>{

@@ -104,7 +104,7 @@ describe("GET /api/users", ()=>{
             });
         })
     })
-=======
+
 describe("PATCH /api/reviews/:review_id, Request body accepts an object in the form { inc_votes: newVote } indicating how much the 'votes' property of the review is to be changed by", ()=>{
     test("PATCH /api/reviews/{review_id} changes the votes from 1 to 667 by adding inc_votes of 666", ()=>{
         return request(app)
@@ -155,4 +155,56 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
     })
   
 
+})
+
+
+
+
+describe.only("GET /api/reviews/:review_id/", ()=>{
+    test.only("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
+        return request(app)
+        .get('/api/reviews/2')
+        .expect(200)
+        .then((res)=>{
+
+            expect(res.body.review).toEqual(expect.objectContaining({
+                comment_count: 3,
+                title: 'Jenga',
+                designer: 'Leslie Scott',
+                owner: 'philippaclaire9',
+                review_img_url:
+                'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                review_body: 'Fiddly fun for all the family',
+                category: 'dexterity',
+                created_at: "2021-01-18T10:01:41.251Z",
+                votes: 5
+            }))
+        })
+    })
+    test("GET /api/reviews/:invalid_review_ID/", ()=>{
+        return request(app)
+        .get('/api/reviews/bananas')
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toEqual("Bad request")
+        })
+    })
+    test("GET /api/reviews/:non_existant_review_ID/", ()=>{
+        return request(app)
+        .get('/api/reviews/10000')
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("review_id not found")
+        })
+    })
+    test("GET /api/reviews/review_ID/:invalid_path_end_point", ()=>{
+        return request(app)
+        .get('/api/reviewsc/2')
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).toBe("Invalid endpoint")
+        })
+    })
+
+})
 })

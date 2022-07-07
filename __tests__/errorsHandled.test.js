@@ -49,7 +49,9 @@ describe("GET /api/reviews/:review_id", ()=>{
         .get('/api/reviews/1')
         .expect(200)
         .then((res)=>{
-            expect(res.body[0]).toEqual(expect.objectContaining({
+            const reviewObject = { review : res.body[0]};
+            console.log(reviewObject)
+            expect(reviewObject.review).toEqual(expect.objectContaining({
                 review_id:1,
                 title:'Agricola',
                 review_body:'Farmyard fun!',
@@ -84,6 +86,25 @@ describe("GET /api/reviews/:invalid_endpoint", ()=>{
     })
 })
 
+
+
+describe("GET /api/users", ()=>{
+    test("GET request returns an array of objects each with a properties of username, name and avatar_url", ()=>{
+        return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then((res)=>{
+            const users = res.body.users;
+            console.log(users);
+            expect(users).toHaveLength(4);
+            users.forEach((user)=>{
+                expect(user).toHaveProperty('username');
+                expect(user).toHaveProperty('name');
+                expect(user).toHaveProperty('avatar_url');
+            });
+        })
+    })
+=======
 describe("PATCH /api/reviews/:review_id, Request body accepts an object in the form { inc_votes: newVote } indicating how much the 'votes' property of the review is to be changed by", ()=>{
     test("PATCH /api/reviews/{review_id} changes the votes from 1 to 667 by adding inc_votes of 666", ()=>{
         return request(app)
@@ -133,6 +154,7 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
         })
     })
   
+
 })
 
 
@@ -182,4 +204,5 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
             expect(res.body.msg).toBe("Bad request")
         })
     })
+
 })

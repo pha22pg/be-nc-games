@@ -13,6 +13,13 @@ exports.fetchReviewsByID = (review_id) =>{
       });
 }
 
+exports.fetchUsers = () =>{
+    return db.query("SELECT * FROM users;").then(({ rows }) => {
+        return rows;
+      });
+}
+
+
 exports.alterReviewVotes = (review_id, votes_change) =>{
     if(votes_change === undefined){ 
         return Promise.reject({status:404, msg: "request object incorrectly formatted"}) 
@@ -24,6 +31,7 @@ exports.alterReviewVotes = (review_id, votes_change) =>{
         return Promise.reject({status:404, msg: "review_id not found"})
       });
 }
+
 
 exports.fetchReviewCommentCount = (review_id, comment_count) =>{
     if(comment_count !== "comment_count") {
@@ -56,3 +64,4 @@ exports.fetchReviewCommentCount = (review_id, comment_count) =>{
     // })
 
 }
+

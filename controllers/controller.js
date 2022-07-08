@@ -1,6 +1,6 @@
 
 
-const { fetchCategories, fetchReviewsByID, fetchUsers, alterReviewVotes, fetchReviewCommentCount, } = require('../models/model')
+const { fetchCategories, fetchReviewsByID, fetchUsers, alterReviewVotes, fetchReviewCommentCount, fetchReviews} = require('../models/model')
 
 
 exports.getCategories = (req,res,next) =>{
@@ -20,13 +20,13 @@ exports.getCategories = (req,res,next) =>{
 
 exports.getReviewsByID = (req,res, next) =>{
     const { review_id } = req.params;
-    console.log("in getreviewsbyid")
+    
     fetchReviewCommentCount(review_id)
     .then(({commentCount, review})=>{
-        console.log(commentCount, review);
+      
         review.comment_count =  commentCount;
-        //reviews[0].commentCount = 3;
-       res.status(200).send({ review });
+       
+       res.status(200).send({review});
     })
     .catch((err)=>{
         next(err);
@@ -50,6 +50,17 @@ exports.updateReviewVotes = (req,res,next) => {
     alterReviewVotes(review_id, inc_votes)
     .then((reviews)=>{
         res.status(200).send(reviews[0]);
+    })
+    .catch((err)=>{
+        next(err);
+    })
+}
+
+exports.getReviews = (req,res,next) => {
+    fetchReviews().
+    then((reviews)=>{
+        //console.log(reviews)
+        res.status(200).send({reviews});
     })
     .catch((err)=>{
         next(err);

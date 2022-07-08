@@ -49,9 +49,8 @@ describe("GET /api/reviews/:review_id", ()=>{
         .get('/api/reviews/1')
         .expect(200)
         .then((res)=>{
-            const reviewObject = { review : res.body[0]};
-            console.log(reviewObject)
-            expect(reviewObject.review).toEqual(expect.objectContaining({
+           
+            expect(res.body.review).toEqual(expect.objectContaining({
                 review_id:1,
                 title:'Agricola',
                 review_body:'Farmyard fun!',
@@ -160,8 +159,8 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
 
 
 
-describe.only("GET /api/reviews/:review_id/", ()=>{
-    test.only("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
+describe("GET /api/reviews/:review_id/", ()=>{
+    test("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
         return request(app)
         .get('/api/reviews/2')
         .expect(200)
@@ -184,7 +183,7 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
     test("GET /api/reviews/:invalid_review_ID/", ()=>{
         return request(app)
         .get('/api/reviews/bananas')
-        .expect(404)
+        .expect(400)
         .then((res)=>{
             expect(res.body.msg).toEqual("Bad request")
         })
@@ -208,3 +207,83 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
 
 })
 })
+
+
+
+
+    describe("GET /api/reviews", ()=>{
+        test("GET request returns an array of reviews with all properties of the reviews object PLUS  property of owner (which is the username from the users table) AND comment_count (which is the total count of all the comments with this article_id) ", ()=>{
+            return request(app)
+            .get('/api/reviews')
+            .expect(200)
+            .then((res)=>{
+                const {reviews} = res.body;
+                //console.log(reviews);
+                expect(reviews).toHaveLength(13);
+
+                       
+                reviews.forEach((review)=>{
+                    
+                    expect(review).toHaveProperty('owner');
+                    expect(review).toHaveProperty('title');
+                    expect(review).toHaveProperty('review_id');
+                    expect(review).toHaveProperty('category');
+                    expect(review).toHaveProperty('review_img_url');
+                    expect(review).toHaveProperty('review_id');
+                    expect(review).toHaveProperty('created_at');
+                    expect(review).toHaveProperty('votes');
+                    expect(review).toHaveProperty('review_body');
+                    expect(review).toHaveProperty
+                    ('designer');
+
+                    expect(review).toHaveProperty('comment_count');
+                });
+            })
+    
+        })
+        test("GET request returns an array of reviews ordered by descending date", ()=>{
+            return request(app)
+            .get('/api/reviews')
+            .expect(200)
+            .then((res)=>{
+                const {reviews} = res.body;
+                let reviewsCreatedAt = reviews.map(review =>{
+                    return review.created_at;
+                })
+      
+                expect(reviewsCreatedAt).toBeSorted({ ascending: true });
+            })
+        })
+        test("GET request returns an array of reviews with all properties of the reviews object PLUS  property of owner (which is the username from the users table) AND comment_count (which is the total count of all the comments with this article_id) all with correct data types", ()=>{
+            return request(app)
+            .get('/api/reviews')
+            .expect(200)
+            .then((res)=>{
+                const {reviews} = res.body;
+                //console.log(reviews);
+                expect(reviews).toHaveLength(13);
+                reviews.forEach((review)=>{
+                    expect.objectContaining({
+                        owner           : expect.any(String),
+                        title           : expect.any(String),
+                        review_id       : expect.any(Number),
+                        category        : expect.any(String), 
+                        review_img_url  : expect.any(String),
+                        created_at      : expect.any(String),
+                        votes           : expect.any(Number) , 
+                        review_body     : expect.any(String),  
+                        designer        : expect.any(String) , 
+                        comment_count   : expect.any(Number) ,     
+                    })
+                   
+                });
+            })
+        })
+
+    })
+
+
+
+
+  
+                     

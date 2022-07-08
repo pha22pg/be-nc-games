@@ -34,7 +34,7 @@ exports.alterReviewVotes = (review_id, votes_change) =>{
 
 
 exports.fetchReviewCommentCount = (review_id) =>{
-    console.log("hello")
+    
     const fetchCommentCount = db.query("SELECT * FROM comments WHERE review_id = $1;", [review_id]).then(({ rows }) => {
             const commentCount = rows.length;
             return commentCount;
@@ -48,24 +48,14 @@ exports.fetchReviewCommentCount = (review_id) =>{
     return Promise.all([fetchCommentCount, fetchReviewByID])
     .then(([commentCount, review])=>{
     
-        const returnObject = { commentCount, review }
-        console.log(returnObject);
+        const returnObject = { commentCount, review };
         return returnObject;
     })
 }
 
 exports.fetchReviews = () => {
-    console.log("inside model")
-    // const fetchCommentCount = db.query("SELECT * FROM comments WHERE review_id = $1;", [review_id]).then(({ rows }) => {
-    //     const commentCount = rows.length;
-    //     return commentCount;
-    // });
-
-    //SELECT ALL REVIEWS FROM TABLE AND FOR EACH REVIEW COUNT HOW MANY TIMES THE REVIEW ID IS PRESENT IN
-    //EACH OBJECT IN THE COMMENTS THEN ADD A comment_count property to eacg object(do that in the 
-    // controller?)
+   
     return db.query(`SELECT reviews.*, COUNT(comments.comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY reviews.created_at;`).then(({ rows }) => {
-        console.log(rows)
         return rows;
       });
 }

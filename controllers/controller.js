@@ -20,13 +20,13 @@ exports.getCategories = (req,res,next) =>{
 
 exports.getReviewsByID = (req,res, next) =>{
     const { review_id } = req.params;
-    console.log("in getreviewsbyid")
+    
     fetchReviewCommentCount(review_id)
     .then(({commentCount, review})=>{
-        console.log(commentCount, review);
+      
         review.comment_count =  commentCount;
-        //reviews[0].commentCount = 3;
-       res.status(200).send({ review });
+       
+       res.status(200).send({review});
     })
     .catch((err)=>{
         next(err);
@@ -57,7 +57,6 @@ exports.updateReviewVotes = (req,res,next) => {
 }
 
 exports.getReviews = (req,res,next) => {
-    console.log("in controller")
     fetchReviews().
     then((reviews)=>{
         //console.log(reviews)

@@ -49,9 +49,8 @@ describe("GET /api/reviews/:review_id", ()=>{
         .get('/api/reviews/1')
         .expect(200)
         .then((res)=>{
-            const reviewObject = { review : res.body[0]};
-            console.log(reviewObject)
-            expect(reviewObject.review).toEqual(expect.objectContaining({
+           
+            expect(res.body.review).toEqual(expect.objectContaining({
                 review_id:1,
                 title:'Agricola',
                 review_body:'Farmyard fun!',
@@ -184,7 +183,7 @@ describe("GET /api/reviews/:review_id/", ()=>{
     test("GET /api/reviews/:invalid_review_ID/", ()=>{
         return request(app)
         .get('/api/reviews/bananas')
-        .expect(404)
+        .expect(400)
         .then((res)=>{
             expect(res.body.msg).toEqual("Bad request")
         })
@@ -212,7 +211,7 @@ describe("GET /api/reviews/:review_id/", ()=>{
 
 
 
-    describe.only("GET /api/reviews", ()=>{
+    describe("GET /api/reviews", ()=>{
         test("GET request returns an array of reviews with all properties of the reviews object PLUS  property of owner (which is the username from the users table) AND comment_count (which is the total count of all the comments with this article_id) ", ()=>{
             return request(app)
             .get('/api/reviews')
@@ -221,7 +220,8 @@ describe("GET /api/reviews/:review_id/", ()=>{
                 const {reviews} = res.body;
                 //console.log(reviews);
                 expect(reviews).toHaveLength(13);
-            
+
+                       
                 reviews.forEach((review)=>{
                     
                     expect(review).toHaveProperty('owner');
@@ -241,5 +241,26 @@ describe("GET /api/reviews/:review_id/", ()=>{
             })
     
         })
+        test("GET request returns an array of reviews ordered by descending date", ()=>{
+            return request(app)
+            .get('/api/reviews')
+            .expect(200)
+            .then((res)=>{
+                const {reviews} = res.body;
+                let reviewsCreatedAt = reviews.map(review =>{
+                    return review.created_at;
+                })
+      
+                expect(reviewsCreatedAt).toBeSorted({ ascending: true });
+            })
+        })
 
     })
+
+
+
+
+
+
+  
+                     

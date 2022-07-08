@@ -1,12 +1,6 @@
 const express = require('express');
-
 const app = express();
-
-const { getCategories, getReviewsByID, updateReviewVotes, getUsers, getReviews} = require('./controllers/controller')
-
-
-console.log("in app")
-
+const { getCategories, getReviewsByID, updateReviewVotes, getUsers, getReviews} = require('./controllers/controller');
 
 app.use(express.json());
 

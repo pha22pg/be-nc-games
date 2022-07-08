@@ -254,10 +254,33 @@ describe("GET /api/reviews/:review_id/", ()=>{
                 expect(reviewsCreatedAt).toBeSorted({ ascending: true });
             })
         })
+        test("GET request returns an array of reviews with all properties of the reviews object PLUS  property of owner (which is the username from the users table) AND comment_count (which is the total count of all the comments with this article_id) all with correct data types", ()=>{
+            return request(app)
+            .get('/api/reviews')
+            .expect(200)
+            .then((res)=>{
+                const {reviews} = res.body;
+                //console.log(reviews);
+                expect(reviews).toHaveLength(13);
+                reviews.forEach((review)=>{
+                    expect.objectContaining({
+                        owner           : expect.any(String),
+                        title           : expect.any(String),
+                        review_id       : expect.any(Number),
+                        category        : expect.any(String), 
+                        review_img_url  : expect.any(String),
+                        created_at      : expect.any(String),
+                        votes           : expect.any(Number) , 
+                        review_body     : expect.any(String),  
+                        designer        : expect.any(String) , 
+                        comment_count   : expect.any(Number) ,     
+                    })
+                   
+                });
+            })
+        })
 
     })
-
-
 
 
 

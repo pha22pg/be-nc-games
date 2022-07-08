@@ -54,3 +54,11 @@ exports.fetchReviewCommentCount = (review_id) =>{
     })
 }
 
+exports.fetchReviewComments = (review_id) => {
+    
+    return db.query("SELECT comments.* FROM reviews LEFT JOIN comments ON reviews.review_id = comments.review_id WHERE reviews.review_id = $1;", [review_id]).then(({ rows }) => {
+        console.log("In the model, rows: ", rows)
+        if(rows.length) return rows;
+        return Promise.reject({status:404, msg: "review_id not found"})
+      });
+}

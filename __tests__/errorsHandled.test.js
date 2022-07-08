@@ -51,7 +51,7 @@ describe("GET /api/reviews/:review_id", ()=>{
         .then((res)=>{
             const reviewObject = { review : res.body[0]};
             console.log(reviewObject)
-            expect(reviewObject.review).toEqual(expect.objectContaining({
+            expect(res.body.review).toEqual(expect.objectContaining({
                 review_id:1,
                 title:'Agricola',
                 review_body:'Farmyard fun!',
@@ -160,8 +160,8 @@ describe("PATCH /api/reviews/:review_id, Request body accepts an object in the f
 
 
 
-describe.only("GET /api/reviews/:review_id/", ()=>{
-    test.only("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
+describe("GET /api/reviews/:review_id/", ()=>{
+    test("GET /api/reviews responds with a review object, which has an additional key, comment_count, with a value of the total number of comments with this review_id", ()=>{
         return request(app)
         .get('/api/reviews/2')
         .expect(200)
@@ -184,7 +184,7 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
     test("GET /api/reviews/:invalid_review_ID/", ()=>{
         return request(app)
         .get('/api/reviews/bananas')
-        .expect(404)
+        .expect(400)
         .then((res)=>{
             expect(res.body.msg).toEqual("Bad request")
         })
@@ -208,3 +208,46 @@ describe.only("GET /api/reviews/:review_id/", ()=>{
 
 })
 })
+
+describe("GET /api/reviews/:review_id/comments Getting an array of comments for a particular review.", ()=>{
+    test("Returns an array of comments with correct property name",()=>{
+        return request(app)
+        .get('/api/reviews/2/comments')
+        .expect(200)
+        .then((res)=>{
+            console.log("In the test, res.body --->", res.body)
+            const comments = res.body.comments;
+                
+                expect(comments).toHaveLength(3);
+                comments.forEach((comment)=>{
+                    expect(comment).toHaveProperty('comment_id');
+                    expect(comment).toHaveProperty('votes');
+                    expect(comment).toHaveProperty('body');
+                    expect(comment).toHaveProperty('author');
+                    expect(comment).toHaveProperty('review_id');
+                    expect(comment).toHaveProperty('created_at');
+                });
+        })
+    })
+    test("Returns an array of comments with correct property name and data type",()=>{
+        return request(app)
+        .get('/api/reviews/2/comments')
+        .expect(200)
+        .then((res)=>{
+            const comments = res.body.comments;
+                expect(comments).toHaveLength(3);
+                comments.forEach((comment)=>{
+                    expect.objectContaining({
+                        comment_id  : expect.any(Number),
+                        votes       : expect.any(Number),
+                        body        : expect.any(String),
+                        author      : expect.any(String), 
+                        review_id   : expect.any(Number),
+                        created_at  : expect.any(String)      
+                    })
+                });
+        })
+    })
+})
+
+

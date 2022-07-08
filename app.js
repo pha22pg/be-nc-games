@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const { getCategories, getReviewsByID, updateReviewVotes, getReviewCommentCount, getUsers} = require('./controllers/controller')
+const { getCategories, getReviewsByID, updateReviewVotes, getReviewCommentCount, getUsers, getReviewComments} = require('./controllers/controller')
 
 
 console.log("in app")
@@ -16,6 +16,7 @@ app.get('/api/reviews/:review_id', getReviewsByID);
 app.get('/api/users/', getUsers);
 
 app.patch('/api/reviews/:review_id', updateReviewVotes);
+app.get('/api/reviews/:review_id/comments', getReviewComments );
 
 
 

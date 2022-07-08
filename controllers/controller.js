@@ -55,3 +55,15 @@ exports.updateReviewVotes = (req,res,next) => {
         next(err);
     })
 }
+
+exports.getReviewComments = (req,res,next) => {
+    const { review_id } = req.params;
+    
+    fetchReviewComments(review_id)
+    .then((reviews)=>{
+        res.status(200).send(reviews[0]);
+    })
+    .catch((err)=>{
+        next(err);
+    })
+}

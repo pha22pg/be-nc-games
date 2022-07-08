@@ -54,3 +54,9 @@ exports.fetchReviewCommentCount = (review_id) =>{
     })
 }
 
+exports.fetchReviewComments = (review_id) => {
+    return db.query("SELECT * FROM reviews WHERE review_id = $1;", [review_id]).then(({ rows }) => {
+        if(rows.length) return rows;
+        return Promise.reject({status:404, msg: "review_id not found"})
+      });
+}
